@@ -24,7 +24,7 @@ class RoomCubit extends Cubit<RoomState> {
   final _firebaseDB = //FirebaseDatabase.instance.ref();
   FirebaseDatabase.instanceFor(
     app: Firebase.app(),
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://my-flutter-app-f4e1c-default-rtdb.asia-southeast1.firebasedatabase.app',
   ).ref();
   RoomCubit() : super(RoomInitial());
 

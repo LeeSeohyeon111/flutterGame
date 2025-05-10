@@ -13,7 +13,7 @@ class LoungeCubit extends Cubit<List<Room>> {
   final _firebaseDb = //FirebaseDatabase.instance.ref(); //realtime db연결. 위치는는 root가리킴
   FirebaseDatabase.instanceFor(
     app: Firebase.app(),
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://my-flutter-app-f4e1c-default-rtdb.asia-southeast1.firebasedatabase.app',
   ).ref();
   List<Room> get lounge => _lounge; //getter
 

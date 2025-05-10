@@ -31,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final userCubit = context.read<UserCubit>();
     if (formKey.currentState!.validate()) {
       // save the form
+      try{
       formKey.currentState!.save();
 
       UserCredential? userCredential =
@@ -67,7 +68,14 @@ class _LoginScreenState extends State<LoginScreen> {
           // TODO navigate to user information
           navigate(isSignedIn: false);
         }
+      }}catch(e){
+        authProvider.setIsLoading(value: false);
+        showSnackBar(
+          context: context,
+          content: e.toString().replaceAll('Exception: ', ''),
+        );
       }
+      
     } else {
       showSnackBar(context: context, content: 'Please fill all fields');
     }
@@ -210,7 +218,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       assetImage: AssetsManager.googleIcon,
                       height: 55.0,
                       width: 55.0,
-                      onTap: () {},
+                      onTap: () {
+                        authProvider.signInWithGoogle(
+                          onSuccess: () async {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              Constants.homeScreen,
+                              (route) => false, // 이전 화면 모두 제거
+                            );
+                          },
+                          onFail: (error) {
+                            print('Google 로그인 실패: $error');
+                            // 필요하면 Snackbar 등 UI 피드백 추가
+                          },
+                        );
+                      },
                     ),
                     // SocialButton(
                     //   label: 'Facebook',

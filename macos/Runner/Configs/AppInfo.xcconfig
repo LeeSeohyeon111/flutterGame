@@ -8,7 +8,7 @@
 PRODUCT_NAME = my_flutter_application
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.myFlutterApplication
+PRODUCT_BUNDLE_IDENTIFIER = com.example.my_flutter_application
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.

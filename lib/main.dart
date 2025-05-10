@@ -7,15 +7,12 @@ import 'package:my_flutter_application/blocs/lounge_cubit/lounge_cubit.dart';
 import 'package:my_flutter_application/blocs/room_cubit.dart/room_cubit.dart';
 import 'package:my_flutter_application/blocs/user_cubit/user_cubit.dart';
 import 'package:my_flutter_application/constants.dart';
-import 'package:my_flutter_application/games/solitaire.dart';
 import 'package:my_flutter_application/main_screens/game_screen.dart';
 import 'package:my_flutter_application/main_screens/home_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:my_flutter_application/main_screens/registration_screen.dart';
 import 'package:my_flutter_application/providers/authentication_provider.dart';
-import 'package:my_flutter_application/providers/game_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'game_view.dart';
@@ -83,7 +80,6 @@ void main() async{
       BlocProvider(create: (context) => UserCubit()),
       BlocProvider(create: (context) => LoungeCubit()),
       BlocProvider(create: (context) => RoomCubit()),
-      ChangeNotifierProvider(create: (_) => GameProvider()),
       ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
       
     ], child: const MyApp()),

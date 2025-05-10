@@ -24,7 +24,7 @@ class UserCubit extends Cubit<UserState> {
   final _firebaseDb = //FirebaseDatabase.instance.ref();
   FirebaseDatabase.instanceFor(
     app: Firebase.app(),
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://my-flutter-app-f4e1c-default-rtdb.asia-southeast1.firebasedatabase.app',
   ).ref();
   UserCubit() : super(UserNotRegistered());
 

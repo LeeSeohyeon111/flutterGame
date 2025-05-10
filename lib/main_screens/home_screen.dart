@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_flutter_application/main_screens/create_game_screen.dart';
 import 'package:my_flutter_application/main_screens/invites_screen.dart';
 import 'package:my_flutter_application/main_screens/lounge_screen.dart';
-import 'package:my_flutter_application/providers/game_provider.dart';
+
 
 
 class HomeScreen extends StatefulWidget {
@@ -16,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-      final gameProvider = context.read<GameProvider>();
       return DefaultTabController(
       length: 3,
       child: Scaffold(

@@ -41,54 +41,51 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDIBbAwuu-ZbNffUKVtk3L-oB5n0ddgGXI',
-    appId: '1:359857010342:web:2d8dae10b7eb4958f96667',
-    messagingSenderId: '359857010342',
-    projectId: 'my-flutter-app-e0c99',
-    authDomain: 'my-flutter-app-e0c99.firebaseapp.com',
-    storageBucket: 'my-flutter-app-e0c99.firebasestorage.app',
-    measurementId: 'G-RDDLQY26VZ',
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
+    apiKey: 'AIzaSyCnIkw_g56R78xkduBPO1xWaK7IaQhaT84',
+    appId: '1:129601420183:web:5f1f6f96f8441effa2a2d2',
+    messagingSenderId: '129601420183',
+    projectId: 'my-flutter-app-f4e1c',
+    authDomain: 'my-flutter-app-f4e1c.firebaseapp.com',
+    storageBucket: 'my-flutter-app-f4e1c.firebasestorage.app',
+    measurementId: 'G-M87Z9WJX8L',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCyiud91K3Pz2UflJRidbGVmw0wc7QZVaY',
-    appId: '1:359857010342:android:4956b803eb03aa58f96667',
-    messagingSenderId: '359857010342',
-    projectId: 'my-flutter-app-e0c99',
-    storageBucket: 'my-flutter-app-e0c99.firebasestorage.app',
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
+    apiKey: 'AIzaSyCW-AZB4poO0HKHSQvuFYi0LIvlystMc98',
+    appId: '1:129601420183:android:b1d837f2a4143e28a2a2d2',
+    messagingSenderId: '129601420183',
+    projectId: 'my-flutter-app-f4e1c',
+    storageBucket: 'my-flutter-app-f4e1c.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA_X-WiZAw8tSUZHODe_sWx3oMvJXISgHM',
-    appId: '1:359857010342:ios:f85e3808e5755e67f96667',
-    messagingSenderId: '359857010342',
-    projectId: 'my-flutter-app-e0c99',
-    storageBucket: 'my-flutter-app-e0c99.firebasestorage.app',
-    iosBundleId: 'com.example.myFlutterApplication',
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
+    apiKey: 'AIzaSyAJlCIJK99oz7BNpXba5Pxwee53OCcZ6uY',
+    appId: '1:129601420183:ios:d383dd0d05b25824a2a2d2',
+    messagingSenderId: '129601420183',
+    projectId: 'my-flutter-app-f4e1c',
+    storageBucket: 'my-flutter-app-f4e1c.firebasestorage.app',
+    iosClientId: '129601420183-1823gi6ds5pl0s98l7hfkeb734rn7tju.apps.googleusercontent.com',
+    iosBundleId: 'com.example.my_flutter_application',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA_X-WiZAw8tSUZHODe_sWx3oMvJXISgHM',
-    appId: '1:359857010342:ios:f85e3808e5755e67f96667',
-    messagingSenderId: '359857010342',
-    projectId: 'my-flutter-app-e0c99',
-    storageBucket: 'my-flutter-app-e0c99.firebasestorage.app',
-    iosBundleId: 'com.example.myFlutterApplication',
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
+    apiKey: 'AIzaSyAJlCIJK99oz7BNpXba5Pxwee53OCcZ6uY',
+    appId: '1:129601420183:ios:d383dd0d05b25824a2a2d2',
+    messagingSenderId: '129601420183',
+    projectId: 'my-flutter-app-f4e1c',
+    storageBucket: 'my-flutter-app-f4e1c.firebasestorage.app',
+    iosClientId: '129601420183-1823gi6ds5pl0s98l7hfkeb734rn7tju.apps.googleusercontent.com',
+    iosBundleId: 'com.example.my_flutter_application',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDIBbAwuu-ZbNffUKVtk3L-oB5n0ddgGXI',
-    appId: '1:359857010342:web:69f99ee109e9df64f96667',
-    messagingSenderId: '359857010342',
-    projectId: 'my-flutter-app-e0c99',
-    authDomain: 'my-flutter-app-e0c99.firebaseapp.com',
-    storageBucket: 'my-flutter-app-e0c99.firebasestorage.app',
-    measurementId: 'G-4C30FLEW45',
-    databaseURL: 'https://my-flutter-app-e0c99-default-rtdb.asia-southeast1.firebasedatabase.app',
-    
+    apiKey: 'AIzaSyCnIkw_g56R78xkduBPO1xWaK7IaQhaT84',
+    appId: '1:129601420183:web:51fb5cba5ec9b076a2a2d2',
+    messagingSenderId: '129601420183',
+    projectId: 'my-flutter-app-f4e1c',
+    authDomain: 'my-flutter-app-f4e1c.firebaseapp.com',
+    storageBucket: 'my-flutter-app-f4e1c.firebasestorage.app',
+    measurementId: 'G-J1T7W2045X',
   );
+
 }

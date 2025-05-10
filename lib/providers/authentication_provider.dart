@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_flutter_application/constants.dart';
 import 'package:my_flutter_application/models/user_model.dart';
+import 'package:my_flutter_application/services/firebase_RTDB_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -52,14 +54,33 @@ class AuthenticationProvider extends ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
+    try{
+        UserCredential userCredential = await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+          _uid = userCredential.user!.uid;
+        notifyListeners();
+        return userCredential;
+    }on FirebaseAuthException catch (e) {
+        throw Exception(_handleFirebaseAuthError(e.code));
+    }finally {
+        _isLoading = false;
+        notifyListeners();
+    }
+  }
 
-    UserCredential userCredential = await firebaseAuth
-        .signInWithEmailAndPassword(email: email, password: password);
-    _uid = userCredential.user!.uid;
-  
-    notifyListeners();
-
-    return userCredential;
+  String _handleFirebaseAuthError(String code) {
+  switch (code) {
+    case 'invalid-email':
+      return '잘못된 이메일 형식입니다.';
+    case 'user-disabled':
+      return '이 계정은 비활성화되었습니다.';
+    case 'user-not-found':
+      return '존재하지 않는 사용자입니다.';
+    case 'wrong-password':
+      return '비밀번호가 틀렸습니다.';
+    default:
+      return '로그인에 실패했습니다. 다시 시도해주세요.';
+    }
   }
 
   // check if user exist
@@ -182,4 +203,72 @@ class AuthenticationProvider extends ChangeNotifier {
     sharedPreferences.clear();
     notifyListeners();
   }
+  
+ Future<void> signInWithGoogle({
+    required Function onSuccess,
+    required Function(String) onFail,
+  }) async {
+    try {
+      setIsLoading(value: true);
+
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        setIsLoading(value: false);
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+          await firebaseAuth.signInWithCredential(credential);
+      _uid = userCredential.user!.uid;
+
+      final isUserExist = await checkUserExist();
+
+      if (isUserExist) {
+        await getUserDataFromFireStore();
+        await saveUserDataToSharedPref();
+      } else {
+        // 1. Firestore에 새 사용자 생성
+        UserModel newUser = UserModel(
+          uid: _uid!,
+          name: googleUser.displayName ?? '사용자',
+          email: googleUser.email,
+          image: googleUser.photoUrl ?? '',
+          createdAt: DateTime.now().microsecondsSinceEpoch.toString(),
+          playerRating: 1200,
+          uuid: const Uuid().v4(), // RTDB는 uuid 기준으로 저장
+          color: null,
+        );
+
+        _userModel = newUser;
+
+        // 2. Firestore 저장
+        await firebaseFirestore
+            .collection(Constants.users)
+            .doc(_uid)
+            .set(newUser.toMap());
+
+        // 3. RTDB 저장
+        final databaseService = DatabaseService();
+        await databaseService.addUserToDB(newUser); // ✅ 여기가 핵심!
+
+        // 4. SharedPreferences 저장
+        await saveUserDataToSharedPref();
+      }
+
+      await setSignedIn();
+      onSuccess();
+    } catch (e) {
+      onFail(e.toString());
+    } finally {
+      setIsLoading(value: false);
+    }
+  }
+
 }
