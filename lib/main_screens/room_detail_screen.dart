@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_flutter_application/blocs/room_cubit.dart/room_cubit.dart';
 import 'package:my_flutter_application/main_screens/game_screen.dart';
+import 'package:my_flutter_application/main_screens/home_screen.dart';
 import '../blocs/user_cubit/user_cubit.dart';
 import '../models/room_model.dart';
 
@@ -26,10 +27,12 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
   void initState() {
     super.initState();
     _roomCubit = context.read<RoomCubit>();
+    _roomCubit?.cancelRoomGuestUpdates(); //  이전 리스너 해제
+    _roomCubit?.cancelRoomGameUpdates(); //이전 리스너 해제
     _roomCubit!.listenToRoomGuestUpdates(widget.room.roomId);
     _roomCubit!.listenToRoomGameUpdates(widget.room.roomId);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     // Ensure we are listening for updates to the guest in the room
@@ -56,6 +59,15 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
               print('Grabbed it yey!: ${updatedRoom.guest?.name}');
             }
           }
+          else if(roomState is RoomExit){
+            print('RoomExit');
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const HomeScreen()),
+              );
+            });
+          } 
 
           return Center(
             child: Padding(

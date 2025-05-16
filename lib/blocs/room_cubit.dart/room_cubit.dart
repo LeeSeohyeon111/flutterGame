@@ -8,6 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/utils/stream_subscriber_mixin.dart';
 
 import 'package:meta/meta.dart';
+import 'package:my_flutter_application/main_screens/home_screen.dart';
 import 'package:my_flutter_application/services/firebase_RTDB_service.dart';
 import 'package:chess/chess.dart' as chesslib;
 import 'package:simple_chess_board/simple_chess_board.dart';
@@ -36,10 +37,10 @@ class RoomCubit extends Cubit<RoomState> {
   //아래는 getter
   bool get isGameListenerSet => _isGameListenerSet;
   bool? get isGameListenerPaused => _gameSubscription?.isPaused;
-
+  
   void cancelRoomGuestUpdates() {
     print('Was listener null before cancelling: ${_guestSubscription == null}');
-    _guestSubscription?.cancel(); //리스너 취소소
+    _guestSubscription?.cancel(); //리스너 취소
     _isGuestListenerSet = false;
   }
 
@@ -53,7 +54,6 @@ class RoomCubit extends Cubit<RoomState> {
   void listenToRoomGameUpdates(String roomId) async { //룸 실시간 감시.
     if (_isGameListenerSet) return; //이미 리스너 잇으면종료료
     _isGameListenerSet = true;
-
     try {
       // 기존 리스너가 있다면 해제
 
@@ -100,9 +100,24 @@ class RoomCubit extends Cubit<RoomState> {
           .child('rooms/$roomId/guest')
           .onValue
           .listen((event) async {
+            //room이 삭제된 경우
+             if (event.snapshot.value == null) {
+                print('Room or guest info was removed!');
+
+                // 방이 삭제된 것인지 전체 확인
+                final roomSnapshot = await _firebaseDB.child('rooms/$roomId').once();
+                if (!roomSnapshot.snapshot.exists) {
+                  // 🔥 방이 삭제된 것으로 판단
+                  emit(RoomExit());
+                    await Future.delayed(Duration(milliseconds: 100));
+                    emit(RoomInitial());
+                  return;
+                }
+              }
+
         if (event.snapshot.value != null) {
           //emit(RoomLoading());
-          final roomSnapshot = await _firebaseDB.child('rooms/$roomId').once();
+          final roomSnapshot = await _firebaseDB.child('rooms/$roomId').once();          
           if (roomSnapshot.snapshot.value != null) {
             // print(
             //     'Did host received a new guest?: ${roomSnapshot.snapshot.value.toString()}');
@@ -141,9 +156,16 @@ class RoomCubit extends Cubit<RoomState> {
         // so guest also must be removed
         // and room must be disposed
         print('Host wants to dispose the room');
+        await _firebaseDB.child('rooms/${room.roomId}').remove();
+        emit(RoomExit());
+          await Future.delayed(Duration(milliseconds: 100));
+          emit(RoomInitial());
       } else {
         // Guest wants to leave the room
         print('Guest want to leave the room');
+        // final updatedRoom = room.copyWith(guest: null);
+        // await _databaseService.updateRoomInDB(updatedRoom);
+        // emit(RoomExit());
       }
     } catch (e) {
       throw Exception(e.toString());
@@ -155,7 +177,7 @@ class RoomCubit extends Cubit<RoomState> {
       //emit(RoomLoading());
       final updatedRoom = room.copyWith(guest: user);//게스트의의 값을 유저로 교체
       await _databaseService.updateRoomInDB(updatedRoom);
-      //emit(RoomLoaded(updatedRoom));
+      emit(RoomLoaded(updatedRoom));
     } on FirebaseException catch (e) {
       print('Firebase Exception: $e');
     } catch (e) {
@@ -237,4 +259,6 @@ class RoomCubit extends Cubit<RoomState> {
     _guestSubscription?.cancel();
     return super.close();
   }
+
+
 }
