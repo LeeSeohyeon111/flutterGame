@@ -113,6 +113,10 @@ class RoomCubit extends Cubit<RoomState> {
                     emit(RoomInitial());
                   return;
                 }
+                  final roomData = Map<String, dynamic>.from(roomSnapshot.snapshot.value as dynamic);
+                  final updatedRoom = Room.fromRTDB(roomData);
+                  emit(RoomLoaded(updatedRoom)); 
+                  return;
               }
 
         if (event.snapshot.value != null) {
@@ -163,9 +167,11 @@ class RoomCubit extends Cubit<RoomState> {
       } else {
         // Guest wants to leave the room
         print('Guest want to leave the room');
-        // final updatedRoom = room.copyWith(guest: null);
-        // await _databaseService.updateRoomInDB(updatedRoom);
-        // emit(RoomExit());
+                  final updatedRoom = room.copyWith(guest: null);
+                  await _databaseService.updateRoomInDB(updatedRoom);
+                  emit(RoomExit());
+                  await Future.delayed(Duration(milliseconds: 100));
+                  emit(RoomInitial());
       }
     } catch (e) {
       throw Exception(e.toString());
